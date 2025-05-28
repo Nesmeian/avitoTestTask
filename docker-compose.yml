@@ -1,21 +1,29 @@
-version: '3.8'
-services:
-  frontend:
-    build: .
-    ports:
-      - '5173:5173'
-    volumes:
-      - .:/app
-      - /app/node_modules
-    command: npm run dev
-    depends_on:
-      - server
+version: "3.9"
 
-  server:
-    build: .
+services:
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     ports:
-      - '3000:3000'
+      - "8080:8080"
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
     volumes:
-      - .:/app
+      - ./client:/app
       - /app/node_modules
-    command: npm run server
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
