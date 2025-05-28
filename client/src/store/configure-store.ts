@@ -1,10 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 import { apiSlice } from '../query/create-api';
+import { BoardSlice } from './boardStore';
 
 const isProduction = false;
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
+  [BoardSlice.name]: BoardSlice.reducer,
 });
 
 export type ApplicationState = ReturnType<typeof rootReducer>;

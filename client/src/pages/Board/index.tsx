@@ -3,10 +3,13 @@ import { useGetBoardsByIdQuery } from '@/query/get';
 import { getFilteredTaskList } from '@/utils/getFilteredTaskList';
 import { Heading, HStack, VStack } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
-import { TaskList } from './successList';
+import { TaskList } from './taskList';
+import { useSelector } from 'react-redux';
+import { ApplicationState } from '@/store/configure-store';
 
 export const Board = () => {
   const { id } = useParams();
+  const title = useSelector((state: ApplicationState) => state.Board.name);
   const { data, isLoading } = useGetBoardsByIdQuery(id!);
   if (isLoading) {
     return <Loader />;
@@ -19,7 +22,7 @@ export const Board = () => {
   );
   return (
     <VStack>
-      <Heading>Название проекта</Heading>
+      <Heading>{title}</Heading>
       <HStack>
         <TaskList data={doneList} />
         <TaskList data={backlogList} />
