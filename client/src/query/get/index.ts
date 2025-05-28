@@ -1,3 +1,4 @@
+import { BoardsResponse } from '@/types/quertTypes';
 import { ApiEndpoints } from '../constants/api';
 import { ApiGroupNames } from '../constants/api-group-name';
 import { EndpointNames } from '../constants/endpoint-names';
@@ -10,7 +11,7 @@ export const getBoardsSlice = apiSlice
   })
   .injectEndpoints({
     endpoints: (builder) => ({
-      getBoards: builder.query<void, void>({
+      getBoards: builder.query<BoardsResponse, void>({
         query: () => ({
           url: ApiEndpoints.BOARDS,
           method: 'GET',
