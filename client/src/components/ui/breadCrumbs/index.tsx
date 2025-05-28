@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { setBoardName } from '@/store/boardStore';
 import GetCurrentPath from '@/utils/getCurrentpath';
 import { useEffect } from 'react';
-import { BoardType } from '@/types/quertTypes';
+import { BoardType } from '@/types/queryTypes';
 import { buildCrumbs } from './buildCrumbs';
 import { Crumb } from '@/types/uiTypes';
 

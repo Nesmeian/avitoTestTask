@@ -20,13 +20,14 @@ export const Board = () => {
   const { doneList, backlogList, inProgressList } = getFilteredTaskList(
     data.data,
   );
+  console.log(data);
   return (
     <VStack>
       <Heading>{title}</Heading>
       <HStack>
-        <TaskList data={doneList} />
-        <TaskList data={backlogList} />
-        <TaskList data={inProgressList} />
+        <TaskList tasks={doneList} />
+        <TaskList tasks={backlogList} />
+        <TaskList tasks={inProgressList} />
       </HStack>
     </VStack>
   );

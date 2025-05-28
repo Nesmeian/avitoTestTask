@@ -1,6 +1,6 @@
 import { Board } from '@/pages/Board';
 import { Boards } from '@/pages/Boards';
-import { Issues } from '@/pages/Issues';
+import { Tasks } from '@/pages/Tasks';
 import { Main } from '@/components/layout/Main';
 import { Navigate, Route, Routes } from 'react-router-dom';
 export const AppRoutes = () => (
@@ -14,7 +14,7 @@ export const AppRoutes = () => (
         <Route index element={<Boards />} />
         <Route path=":id" element={<Board />} />
       </Route>
-      <Route path="issues" element={<Issues />} />
+      <Route path="issues" element={<Tasks />} />
     </Route>
   </Routes>
 );

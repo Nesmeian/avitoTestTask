@@ -1,5 +1,6 @@
-import { TaskType } from '@/types/quertTypes';
-export const getFilteredTaskList = (data: TaskType[]) => {
+import { Task } from '@/types/queryTypes';
+
+export const getFilteredTaskList = (data: Task[]) => {
   return {
     doneList: data.filter((task) => task.status === 'Done'),
     backlogList: data.filter((task) => task.status === 'Backlog'),

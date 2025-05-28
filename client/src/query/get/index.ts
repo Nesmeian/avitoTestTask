@@ -1,4 +1,4 @@
-import { BoardsResponse, TaskResponse } from '@/types/quertTypes';
+import { BoardsResponse, TasksResponse } from '@/types/queryTypes';
 import { ApiEndpoints } from '../constants/api';
 import { ApiGroupNames } from '../constants/api-group-name';
 import { EndpointNames } from '../constants/endpoint-names';
@@ -7,7 +7,7 @@ import { apiSlice } from '../create-api';
 
 export const getBoardsSlice = apiSlice
   .enhanceEndpoints({
-    addTagTypes: [Tags.BOARDS_TASK, Tags.BOARDS],
+    addTagTypes: [Tags.TASKS, Tags.BOARDS],
   })
   .injectEndpoints({
     endpoints: (builder) => ({
@@ -20,15 +20,25 @@ export const getBoardsSlice = apiSlice
         }),
         providesTags: [Tags.BOARDS],
       }),
-      getBoardsById: builder.query<TaskResponse, string>({
+      getBoardsById: builder.query<TasksResponse, string>({
         query: (id) => ({
           url: `${ApiEndpoints.BOARDS}/${id}`,
           method: 'GET',
-          apiGroupName: ApiGroupNames.BOARDS_TASK,
-          name: EndpointNames.BOARDS_TASK,
+          apiGroupName: ApiGroupNames.BOARDS,
+          name: EndpointNames.BOARDS,
         }),
-        providesTags: [Tags.BOARDS_TASK],
+        providesTags: [Tags.BOARDS],
+      }),
+      getTasks: builder.query<TasksResponse, void>({
+        query: () => ({
+          url: ApiEndpoints.TASKS,
+          method: 'GET',
+          apiGroupName: ApiGroupNames.TASKS,
+          name: EndpointNames.TASKS,
+        }),
+        providesTags: [Tags.TASKS],
       }),
     }),
   });
-export const { useGetBoardsQuery, useGetBoardsByIdQuery } = getBoardsSlice;
+export const { useGetBoardsQuery, useGetBoardsByIdQuery, useGetTasksQuery } =
+  getBoardsSlice;

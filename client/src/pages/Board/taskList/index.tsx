@@ -1,10 +1,10 @@
-import { TaskListProps } from '@/types/quertTypes';
+import { TaskListProps } from '@/types/queryTypes';
 import { Text, VStack } from '@chakra-ui/react';
 
-export const TaskList = ({ data }: TaskListProps) => {
+export const TaskList = ({ tasks }: TaskListProps) => {
   return (
     <VStack>
-      {data.map(({ id, title, description }) => (
+      {tasks.map(({ id, title, description }) => (
         <VStack key={id}>
           <Text>{title}</Text>
           <Text>{description}</Text>

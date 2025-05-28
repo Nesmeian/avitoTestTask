@@ -1,5 +1,5 @@
 import { STATIC_LABELS } from '@/constants/breadCrumbs';
-import { BoardType } from '@/types/quertTypes';
+import { BoardType } from '@/types/queryTypes';
 import { Crumb } from '@/types/uiTypes';
 
 export function buildCrumbs(segments: string[], board?: BoardType): Crumb[] {
