@@ -5,4 +5,5 @@ export const mainStyles = {
   alignItems: 'flex-start',
   gap: '12px',
   justify: 'space-between',
+  p: '20px',
 };
