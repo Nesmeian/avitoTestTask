@@ -1,6 +1,6 @@
 import { Loader } from '@/components/ui/loader';
 import { useGetBoardsQuery } from '@/query/get';
-import { Badge, Box, Text, VStack } from '@chakra-ui/react';
+import { Badge, HStack, Text, VStack } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
 export const BoardsList = () => {
@@ -10,9 +10,11 @@ export const BoardsList = () => {
     return <Loader />;
   }
   return (
-    <VStack as={Link} to="id">
+    <VStack>
       {data.data.map((board) => (
-        <Box
+        <HStack
+          as={Link}
+          to={String(board.id)}
           key={board.id}
           p={4}
           border="1px solid"
@@ -24,7 +26,7 @@ export const BoardsList = () => {
           <Badge mt={2} colorScheme="green">
             {board.taskCount} задач
           </Badge>
-        </Box>
+        </HStack>
       ))}
     </VStack>
   );

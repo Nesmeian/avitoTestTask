@@ -1,4 +1,4 @@
-import { BoardsResponse } from '@/types/quertTypes';
+import { BoardsResponse, TaskResponse } from '@/types/quertTypes';
 import { ApiEndpoints } from '../constants/api';
 import { ApiGroupNames } from '../constants/api-group-name';
 import { EndpointNames } from '../constants/endpoint-names';
@@ -7,7 +7,7 @@ import { apiSlice } from '../create-api';
 
 export const getBoardsSlice = apiSlice
   .enhanceEndpoints({
-    addTagTypes: [Tags.BOARDS],
+    addTagTypes: [Tags.BOARDS_TASK, Tags.BOARDS],
   })
   .injectEndpoints({
     endpoints: (builder) => ({
@@ -20,6 +20,15 @@ export const getBoardsSlice = apiSlice
         }),
         providesTags: [Tags.BOARDS],
       }),
+      getBoardsById: builder.query<TaskResponse, string>({
+        query: (id) => ({
+          url: `${ApiEndpoints.BOARDS}/${id}`,
+          method: 'GET',
+          apiGroupName: ApiGroupNames.BOARDS_TASK,
+          name: EndpointNames.BOARDS_TASK,
+        }),
+        providesTags: [Tags.BOARDS_TASK],
+      }),
     }),
   });
-export const { useGetBoardsQuery } = getBoardsSlice;
+export const { useGetBoardsQuery, useGetBoardsByIdQuery } = getBoardsSlice;
