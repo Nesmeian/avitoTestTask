@@ -1,9 +1,7 @@
+import { AppRoutes } from './routes';
+
 function App() {
-  return (
-    <>
-      <>Black</>
-    </>
-  );
+  return <AppRoutes />;
 }
 
 export default App;
