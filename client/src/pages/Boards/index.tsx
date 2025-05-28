@@ -1,5 +1,6 @@
-import { Filter } from '@/components/filter';
-import { Search } from '@/components/search';
+import { BoardsList } from '@/components/features/boardsList';
+import { Filter } from '@/components/features/filter';
+import { Search } from '@/components/features/search';
 import { HStack, VStack } from '@chakra-ui/react';
 
 export const Boards = () => {
@@ -9,6 +10,7 @@ export const Boards = () => {
         <Search />
         <Filter />
       </HStack>
+      <BoardsList />
     </VStack>
   );
 };

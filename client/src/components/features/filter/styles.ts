@@ -1,6 +1,6 @@
 export const filterMenuBtnStyles = {
   height: '100%',
-  w: '234px',
+  w: { base: '300px' },
   background: 'white',
   border: '1px solid rgba(0, 0, 0, 0.08)',
   fontSize: '17.5px',
