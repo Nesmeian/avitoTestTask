@@ -27,7 +27,7 @@
     },
 
     /* Types */
-    "types": ["node"]
+    "types": ["node", "vite/client"]
   },
   "include": ["src", "main.tsx"]
 }
