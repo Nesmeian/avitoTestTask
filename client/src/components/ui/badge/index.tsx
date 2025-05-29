@@ -3,7 +3,11 @@ import { BadgeProps } from '@/types/uiTypes';
 import { Badge as BadgeComponent } from '@chakra-ui/react';
 
 export const Badge = ({ status }: BadgeProps) => (
-  <BadgeComponent p="10px" colorScheme={BADGE_STATUS[status]}>
+  <BadgeComponent
+    p="10px"
+    borderRadius="20px"
+    colorScheme={BADGE_STATUS[status]}
+  >
     {status}
   </BadgeComponent>
 );

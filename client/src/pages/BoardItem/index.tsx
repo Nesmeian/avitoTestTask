@@ -1,7 +1,7 @@
 import { Loader } from '@/components/ui/loader';
 import { useGetBoardsByIdQuery } from '@/query/get';
 import { getFilteredTaskList } from '@/utils/getFilteredTaskList';
-import { Heading, HStack, VStack } from '@chakra-ui/react';
+import { Grid, Heading, VStack } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '@/store/configure-store';
@@ -21,13 +21,13 @@ export const Board = () => {
     data.data,
   );
   return (
-    <VStack>
+    <VStack gap={8}>
       <Heading>{title}</Heading>
-      <HStack>
-        <TaskGroup tasks={doneList} />
-        <TaskGroup tasks={backlogList} />
-        <TaskGroup tasks={inProgressList} />
-      </HStack>
+      <Grid templateColumns="repeat(3, 1fr)" gap="16px">
+        <TaskGroup status="Todo" tasks={backlogList} />
+        <TaskGroup status="In Progress" tasks={inProgressList} />
+        <TaskGroup status="Completed" tasks={doneList} />
+      </Grid>
     </VStack>
   );
 };

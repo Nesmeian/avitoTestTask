@@ -1,8 +1,8 @@
 import { STATIC_LABELS } from '@/constants/ui/breadCrumbs';
-import { BoardType } from '@/types/queryTypes';
+import { Board } from '@/types/queryTypes';
 import { Crumb } from '@/types/uiTypes';
 
-export function buildCrumbs(segments: string[], board?: BoardType): Crumb[] {
+export function buildCrumbs(segments: string[], board?: Board): Crumb[] {
   return segments.map((segment, idx) => {
     const to = '/' + segments.slice(0, idx + 1).join('/');
     let label: string;

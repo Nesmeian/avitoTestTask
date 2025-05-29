@@ -7,9 +7,10 @@ import { useDispatch } from 'react-redux';
 import { setBoardName } from '@/store/boardStore';
 import GetCurrentPath from '@/utils/getCurrentpath';
 import { useEffect } from 'react';
-import { BoardType } from '@/types/queryTypes';
+
 import { buildCrumbs } from './buildCrumbs';
 import { Crumb } from '@/types/uiTypes';
+import { Board } from '@/types/queryTypes';
 
 export const BreadCrumbs = () => {
   const currentPath = GetCurrentPath();
@@ -18,7 +19,7 @@ export const BreadCrumbs = () => {
 
   const idSegment = currentPath.find((seg) => /^\d+$/.test(seg));
   const boardId = idSegment ? Number(idSegment) : undefined;
-  const board = data?.data.find((b: BoardType) => b.id === boardId);
+  const board = data?.data.find((b: Board) => b.id === boardId);
 
   useEffect(() => {
     if (board) {
@@ -32,7 +33,11 @@ export const BreadCrumbs = () => {
   const crumbsList: Crumb[] = buildCrumbs(currentPath, board);
 
   return (
-    <Breadcrumb spacing="8px" separator={<ChevronRightIcon color="gray.500" />}>
+    <Breadcrumb
+      spacing="8px"
+      separator={<ChevronRightIcon color="gray.500" />}
+      fontSize="16px"
+    >
       {crumbsList.map((crumb, idx) => (
         <BreadcrumbItem
           key={crumb.to}
