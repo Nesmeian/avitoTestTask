@@ -1,4 +1,4 @@
-import { STATIC_LABELS } from '@/constants/breadCrumbs';
+import { STATIC_LABELS } from '@/constants/ui/breadCrumbs';
 import { BoardType } from '@/types/queryTypes';
 import { Crumb } from '@/types/uiTypes';
 

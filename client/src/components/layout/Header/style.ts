@@ -6,4 +6,5 @@ export const headerStyles = {
   position: 'fixed',
   p: '20px',
   justifyContent: 'space-between',
+  zIndex: 20,
 } as const;

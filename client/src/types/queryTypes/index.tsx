@@ -1,18 +1,20 @@
-export interface Board {
+export type Board = {
   id: number;
   name: string;
   description: string;
   taskCount: number;
-}
+};
 
-export interface Assignee {
+export type Assignee = {
   id: number;
   fullName: string;
   email: string;
   avatarUrl: string;
-}
-
-export interface Task {
+};
+export type AssigneeProps = {
+  assignee: Assignee;
+};
+export type Task = {
   id: number;
   title: string;
   description: string;
@@ -21,7 +23,7 @@ export interface Task {
   boardId: number;
   boardName: string;
   assignee: Assignee;
-}
+};
 
 export type ApiResponse<T> = {
   data: T[];

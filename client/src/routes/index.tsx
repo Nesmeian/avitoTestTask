@@ -1,4 +1,4 @@
-import { Board } from '@/pages/Board';
+import { Board } from '@/pages/BoardItem';
 import { Boards } from '@/pages/Boards';
 import { Tasks } from '@/pages/Tasks';
 import { Main } from '@/components/layout/Main';
