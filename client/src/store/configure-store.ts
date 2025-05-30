@@ -20,3 +20,4 @@ export const store = configureStore({
     getDefaultMiddleware().concat(apiSlice.middleware),
   devTools: !isProduction,
 });
+export type AppDispatch = typeof store.dispatch;

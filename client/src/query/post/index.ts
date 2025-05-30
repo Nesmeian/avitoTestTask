@@ -4,9 +4,10 @@ import { ApiGroupNames } from '../constants/api-group-name';
 import { EndpointNames } from '../constants/endpoint-names';
 import { Tags } from '../constants/tags';
 import { apiSlice } from '../create-api';
-import { CreateTaskResponse, UpdateStatusReg } from '@/types/queryTypes';
+import { CreateTaskResponse } from '@/types/queryTypes';
+import { handleStatusUpdateOnCreate } from '../helpers';
 
-export const tasksApi = apiSlice
+export const tasksApiPost = apiSlice
   .enhanceEndpoints({
     addTagTypes: [Tags.TASKS],
   })
@@ -21,19 +22,11 @@ export const tasksApi = apiSlice
           body: payload,
         }),
         invalidatesTags: [Tags.TASKS],
-      }),
-      updateTaskStatus: builder.mutation<void, UpdateStatusReg>({
-        query: ({ id, status }) => ({
-          url: `/tasks/updateStatus/${id}`,
-          method: 'PUT',
-          apiGroupName: ApiGroupNames.TASKS,
-          name: EndpointNames.TASKS,
-          body: { status },
-        }),
-        invalidatesTags: [Tags.TASKS],
+        async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+          await handleStatusUpdateOnCreate(arg, dispatch, queryFulfilled);
+        },
       }),
     }),
   });
 
-export const { useCreateTaskIssueMutation, useUpdateTaskStatusMutation } =
-  tasksApi;
+export const { useCreateTaskIssueMutation } = tasksApiPost;

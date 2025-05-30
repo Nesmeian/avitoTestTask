@@ -13,20 +13,17 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { issueFormSchema } from './resolver';
 import { ControlledMenuField } from './components/ControlledMenuField';
 import { PRIORITIES_MAP, STATUSES_MAP } from './constants';
-import {
-  useCreateTaskIssueMutation,
-  useUpdateTaskStatusMutation,
-} from '@/query/post';
+import { useCreateTaskIssueMutation } from '@/query/post';
 import { Loader } from '@/components/ui/loader';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '@/store/configure-store';
 import { IssuesFormStyles } from './styles';
 import { TaskData } from '@/types/queryTypes';
+import { useUpdateTaskMutation } from '@/query/put';
 
 export const IssueForm = ({ task }: TaskData) => {
-  const [createTaskIssue, { isLoading, isSuccess, isError, error }] =
-    useCreateTaskIssueMutation();
-  const [updateTaskStatus] = useUpdateTaskStatusMutation();
+  const [createTaskIssue, { isLoading }] = useCreateTaskIssueMutation();
+  const [updateTask] = useUpdateTaskMutation();
   const boardsMap = useSelector(
     (state: ApplicationState) => state.Board.boardMap,
   );
@@ -47,30 +44,25 @@ export const IssueForm = ({ task }: TaskData) => {
     defaultValues: {
       boardId: currentBoardId === '' ? undefined : Number(currentBoardId),
       ...task,
+      assigneeId: task?.assignee.id,
     },
   });
   const onSubmit = async (data: IssueFormValues) => {
-    try {
-      const createResult = await createTaskIssue(data).unwrap();
-      console.log(createResult, 'ffffffffffffffffffffffffffff');
-      const taskId = createResult.data.id;
-      console.log(taskId, 'fASFassfSF');
-      await updateTaskStatus({ id: taskId, status: data.status }).unwrap();
+    if (!data || Object.keys(data).length === 0) {
+      console.error('Payload пустой или не передан!');
+      return;
+    }
 
-      console.log('Задача создана и статус обновлен');
-    } catch (error) {
-      console.error('Ошибка при создании или обновлении задачи', error);
+    if (!task) {
+      createTaskIssue(data);
+    } else {
+      updateTask(data);
     }
   };
   if (isLoading) {
     return <Loader />;
   }
-  if (isSuccess) {
-    console.log('YEEEEEE');
-  }
-  if (isError) {
-    console.log(error);
-  }
+
   return (
     <VStack alignItems="start" h="100%">
       <Heading as="h3" size="lg">
@@ -117,7 +109,7 @@ export const IssueForm = ({ task }: TaskData) => {
             error={errors.priority}
           />
         </VStack>
-        <Button type="submit">Создать</Button>
+        <Button type="submit">{task ? 'Обновить' : 'Создать'}</Button>
       </chakra.form>
     </VStack>
   );
