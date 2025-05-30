@@ -3,13 +3,13 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBoardId, setBoardName } from '@/store/boardStore';
-import GetCurrentPath from '@/utils/getCurrentpath';
 import { useEffect } from 'react';
 
 import { buildCrumbs } from './buildCrumbs';
 import { Crumb } from '@/types/uiTypes';
 import { Board } from '@/types/queryTypes';
 import { ApplicationState } from '@/store/configure-store';
+import GetCurrentPath from '@/utils/getCurrentpath';
 
 export const BreadCrumbs = () => {
   const currentPath = GetCurrentPath();

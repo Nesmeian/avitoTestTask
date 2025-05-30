@@ -13,17 +13,20 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { issueFormSchema } from './resolver';
 import { ControlledMenuField } from './components/ControlledMenuField';
 import { PRIORITIES_MAP, STATUSES_MAP } from './constants';
-import { useCreateTaskIssueMutation } from '@/query/post';
+import {
+  useCreateTaskIssueMutation,
+  useUpdateTaskStatusMutation,
+} from '@/query/post';
 import { Loader } from '@/components/ui/loader';
-import GetCurrentPath from '@/utils/getCurrentpath';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '@/store/configure-store';
 import { IssuesFormStyles } from './styles';
+import { TaskData } from '@/types/queryTypes';
 
-export const IssueForm = () => {
+export const IssueForm = ({ task }: TaskData) => {
   const [createTaskIssue, { isLoading, isSuccess, isError, error }] =
     useCreateTaskIssueMutation();
-  GetCurrentPath();
+  const [updateTaskStatus] = useUpdateTaskStatusMutation();
   const boardsMap = useSelector(
     (state: ApplicationState) => state.Board.boardMap,
   );
@@ -33,6 +36,7 @@ export const IssueForm = () => {
   const currentBoardId = useSelector(
     (state: ApplicationState) => state.Board.id,
   );
+
   const {
     handleSubmit,
     register,
@@ -42,10 +46,21 @@ export const IssueForm = () => {
     resolver: yupResolver(issueFormSchema),
     defaultValues: {
       boardId: currentBoardId === '' ? undefined : Number(currentBoardId),
+      ...task,
     },
   });
-  const onSubmit = (data: IssueFormValues) => {
-    createTaskIssue(data);
+  const onSubmit = async (data: IssueFormValues) => {
+    try {
+      const createResult = await createTaskIssue(data).unwrap();
+      console.log(createResult, 'ffffffffffffffffffffffffffff');
+      const taskId = createResult.data.id;
+      console.log(taskId, 'fASFassfSF');
+      await updateTaskStatus({ id: taskId, status: data.status }).unwrap();
+
+      console.log('Задача создана и статус обновлен');
+    } catch (error) {
+      console.error('Ошибка при создании или обновлении задачи', error);
+    }
   };
   if (isLoading) {
     return <Loader />;
@@ -59,7 +74,7 @@ export const IssueForm = () => {
   return (
     <VStack alignItems="start" h="100%">
       <Heading as="h3" size="lg">
-        Создание рецепта
+        {task ? 'Редактирование рецепта' : 'Создание рецепта'}
       </Heading>
       <chakra.form {...IssuesFormStyles} onSubmit={handleSubmit(onSubmit)}>
         <VStack>

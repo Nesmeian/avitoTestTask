@@ -1,5 +1,5 @@
 import { IssueForm } from '@/components/forms/IssueForm/IssueForm';
-import { useDrawer } from '@/context/drawerProvider/useDrawer';
+import { useDrawer } from '@/context/modalProvider/useModal';
 import { Button } from '@chakra-ui/react';
 
 export const CreateIssue = () => {

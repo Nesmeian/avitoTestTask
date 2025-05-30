@@ -24,10 +24,10 @@ export const getBoardsSlice = apiSlice
         query: (id) => ({
           url: `${ApiEndpoints.BOARDS}/${id}`,
           method: 'GET',
-          apiGroupName: ApiGroupNames.BOARDS,
-          name: EndpointNames.BOARDS,
+          apiGroupName: ApiGroupNames.TASKS,
+          name: EndpointNames.TASKS,
         }),
-        providesTags: [Tags.BOARDS],
+        providesTags: [Tags.TASKS],
       }),
       getTasks: builder.query<TasksResponse, void>({
         query: () => ({

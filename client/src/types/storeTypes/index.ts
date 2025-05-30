@@ -1,4 +1,4 @@
-import { Board, User } from '../queryTypes';
+import { Board, Task, User } from '../queryTypes';
 
 export type BoardStore = {
   name: string;
@@ -9,4 +9,7 @@ export type BoardStore = {
 export type UsersStore = {
   users: User[];
   assigneeMap: Record<number | string, string>;
+};
+export type TasksStore = {
+  tasks: Task[];
 };

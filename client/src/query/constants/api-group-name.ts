@@ -1,5 +1,5 @@
 export enum ApiGroupNames {
   BOARDS = 'boards',
-  TASKS = 'issues',
+  TASKS = 'tasks',
   USERS = 'users',
 }

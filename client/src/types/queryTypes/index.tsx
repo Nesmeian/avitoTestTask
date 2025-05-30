@@ -32,6 +32,9 @@ export type Task = {
 export type ApiResponse<T> = {
   data: T[];
 };
+export type TaskData = {
+  task?: Task;
+};
 export type User = {
   id: number;
   fullName: string;
@@ -51,3 +54,5 @@ export type TaskListProps = {
   status?: StatusName;
   tasks: Task[];
 };
+export type UpdateStatusReg = { id: number; status: string };
+export type CreateTaskResponse = { data: { id: number } };

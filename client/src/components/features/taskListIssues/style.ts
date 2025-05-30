@@ -9,6 +9,8 @@ export const taskListWrapperStyles = {
   w: '100%',
 };
 export const taskItemStyles = {
+  gap: 4,
+  cursor: 'pointer',
   p: { lg: '20px', base: '12px' },
   border: '1px solid rgba(0, 0, 0, 0.08)',
   h: '300px',

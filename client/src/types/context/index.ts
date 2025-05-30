@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export type DrawerContextType = {
+export type ModalContextType = {
   open: (content: ReactNode) => void;
   close: () => void;
 };

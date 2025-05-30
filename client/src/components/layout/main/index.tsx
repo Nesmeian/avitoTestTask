@@ -2,7 +2,7 @@ import { Header } from '@/components/layout/Header';
 import { HStack, Stack } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 import { mainStyles } from './styles';
-import { DrawerProvider } from '@/context/drawerProvider';
+import { ModalProvider } from '@/context/modalProvider';
 import { useTaskReferenceData } from '@/hooks/useTaskReferenceData';
 import { Loader } from '@/components/ui/loader';
 
@@ -12,13 +12,13 @@ export const Main = () => {
     return <Loader />;
   }
   return (
-    <DrawerProvider>
+    <ModalProvider>
       <Stack gap="0px">
         <Header />
         <HStack as="main" {...mainStyles}>
           <Outlet />
         </HStack>
       </Stack>
-    </DrawerProvider>
+    </ModalProvider>
   );
 };
