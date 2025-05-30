@@ -7,3 +7,8 @@ type BadgeStatusProgress = 'Backlog' | 'InProgress' | 'Done';
 export type BadgeProps = {
   status: BadgeStatusDifficulty | BadgeStatusProgress;
 };
+export type DrawerType = {
+  isOpen: boolean;
+  onClose: () => void;
+  children: JSX.Element;
+};

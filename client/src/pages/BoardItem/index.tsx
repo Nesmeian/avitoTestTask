@@ -23,7 +23,7 @@ export const Board = () => {
   return (
     <VStack gap={8}>
       <Heading>{title}</Heading>
-      <Grid templateColumns="repeat(3, 1fr)" gap="16px">
+      <Grid templateColumns={{ lg: 'repeat(3, 1fr)', base: '1fr' }} gap="16px">
         <TaskGroup status="Todo" tasks={backlogList} />
         <TaskGroup status="In Progress" tasks={inProgressList} />
         <TaskGroup status="Completed" tasks={doneList} />

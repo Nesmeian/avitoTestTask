@@ -4,12 +4,12 @@ import { HStack, VStack } from '@chakra-ui/react';
 import { TaskList } from '../../components/features/taskListIssues/taskList';
 import { Search } from '@/components/features/search';
 import { Filter } from '@/components/features/filter';
+import { CreateIssue } from '@/components/buttons/headerButtons/CreateIssue';
 
 export const Tasks = () => {
   const { data, isLoading, isError } = useGetTasksQuery();
   if (isLoading) return <Loader />;
   if (isError || !data?.data) return <div>Error loading tasks</div>;
-  console.log(data.data);
   return (
     <VStack width="100%" gap="30px">
       <HStack justifyContent="space-between" w="100%">
@@ -17,6 +17,7 @@ export const Tasks = () => {
         <Filter />
       </HStack>
       <TaskList tasks={data.data} />
+      <CreateIssue />
     </VStack>
   );
 };

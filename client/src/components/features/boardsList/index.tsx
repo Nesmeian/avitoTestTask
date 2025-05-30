@@ -1,7 +1,8 @@
 import { Loader } from '@/components/ui/loader';
 import { useGetBoardsQuery } from '@/query/get';
-import { Badge, HStack, Text, VStack } from '@chakra-ui/react';
+import { Button, Grid, Heading, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import { boardItemStyles } from './style';
 
 export const BoardsList = () => {
   const { data, isLoading } = useGetBoardsQuery();
@@ -9,25 +10,15 @@ export const BoardsList = () => {
   if (isLoading || !data) {
     return <Loader />;
   }
-  return (
-    <VStack>
-      {data.data.map((board) => (
-        <HStack
-          as={Link}
-          to={String(board.id)}
-          key={board.id}
-          p={4}
-          border="1px solid"
-          borderColor="gray.200"
-          borderRadius="md"
-        >
-          <Text fontWeight="bold">{board.name}</Text>
-          <Text fontSize="sm">{board.description}</Text>
-          <Badge mt={2} colorScheme="green">
-            {board.taskCount} задач
-          </Badge>
-        </HStack>
-      ))}
-    </VStack>
-  );
+  return data.data.map((board) => (
+    <Grid {...boardItemStyles} key={board.id}>
+      <Heading as="h3" size="xl">
+        {board.name}
+      </Heading>
+      <Text fontSize="xl">{board.description}</Text>
+      <Button as={Link} to={String(board.id)}>
+        Перейти к доске
+      </Button>
+    </Grid>
+  ));
 };
