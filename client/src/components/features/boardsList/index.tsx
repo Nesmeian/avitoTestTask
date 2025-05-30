@@ -1,16 +1,12 @@
-import { Loader } from '@/components/ui/loader';
-import { useGetBoardsQuery } from '@/query/get';
 import { Button, Grid, Heading, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { boardItemStyles } from './style';
+import { useSelector } from 'react-redux';
+import { ApplicationState } from '@/store/configure-store';
 
 export const BoardsList = () => {
-  const { data, isLoading } = useGetBoardsQuery();
-
-  if (isLoading || !data) {
-    return <Loader />;
-  }
-  return data.data.map((board) => (
+  const boards = useSelector((state: ApplicationState) => state.Board.boards);
+  return boards.map((board) => (
     <Grid {...boardItemStyles} key={board.id}>
       <Heading as="h3" size="xl">
         {board.name}

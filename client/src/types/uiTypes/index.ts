@@ -1,3 +1,5 @@
+import { ButtonProps } from '@chakra-ui/react';
+
 export interface Crumb {
   to: string;
   label: string;
@@ -11,4 +13,11 @@ export type DrawerType = {
   isOpen: boolean;
   onClose: () => void;
   children: JSX.Element;
+};
+export type IssuesFormMenuType = {
+  title: string | number;
+  list: Record<number | string, string>;
+  onSelect?: (value: string) => void;
+  buttonProps?: ButtonProps;
+  isDisabled?: boolean;
 };

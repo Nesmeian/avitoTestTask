@@ -1,5 +1,5 @@
 import { Loader } from '@/components/ui/loader';
-import { useGetBoardsByIdQuery } from '@/query/get';
+import { useGetBoardsByIdQuery } from '@/query/get/getBoardsSlice';
 import { getFilteredTaskList } from '@/utils/getFilteredTaskList';
 import { Grid, Heading, VStack } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';

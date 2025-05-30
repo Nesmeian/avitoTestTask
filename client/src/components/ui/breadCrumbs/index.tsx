@@ -1,36 +1,35 @@
-import { useGetBoardsQuery } from '@/query/get';
-import { Loader } from '../loader';
 import { Link } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
-import { useDispatch } from 'react-redux';
-import { setBoardName } from '@/store/boardStore';
+import { useDispatch, useSelector } from 'react-redux';
+import { setBoardId, setBoardName } from '@/store/boardStore';
 import GetCurrentPath from '@/utils/getCurrentpath';
 import { useEffect } from 'react';
 
 import { buildCrumbs } from './buildCrumbs';
 import { Crumb } from '@/types/uiTypes';
 import { Board } from '@/types/queryTypes';
+import { ApplicationState } from '@/store/configure-store';
 
 export const BreadCrumbs = () => {
   const currentPath = GetCurrentPath();
   const dispatch = useDispatch();
-  const { data, isLoading, isError } = useGetBoardsQuery();
-
+  const board = useSelector((state: ApplicationState) => state.Board.boards);
   const idSegment = currentPath.find((seg) => /^\d+$/.test(seg));
   const boardId = idSegment ? Number(idSegment) : undefined;
-  const board = data?.data.find((b: Board) => b.id === boardId);
+  const currentBoard = board.find((b: Board) => b.id === boardId);
 
   useEffect(() => {
-    if (board) {
-      dispatch(setBoardName(board.name));
+    if (currentBoard) {
+      dispatch(setBoardName(currentBoard.name));
+      dispatch(setBoardId(currentBoard.id));
+    } else {
+      dispatch(setBoardName(''));
+      dispatch(setBoardId(''));
     }
-  }, [dispatch, board]);
+  }, [dispatch, currentBoard, currentPath]);
 
-  if (isLoading) return <Loader />;
-  if (isError || !data?.data) return <div>Ошибка при загрузке проектов</div>;
-
-  const crumbsList: Crumb[] = buildCrumbs(currentPath, board);
+  const crumbsList: Crumb[] = buildCrumbs(currentPath, currentBoard);
 
   return (
     <Breadcrumb

@@ -1,4 +1,4 @@
-import { IssueForm } from '@/components/forms/IssueForm';
+import { IssueForm } from '@/components/forms/IssueForm/IssueForm';
 import { useDrawer } from '@/context/drawerProvider/useDrawer';
 import { Button } from '@chakra-ui/react';
 

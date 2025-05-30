@@ -1,7 +1,7 @@
 import { HStack } from '@chakra-ui/react';
 import { headerStyles } from './style';
 
-import { CreateIssue } from '@/components/buttons/headerButtons/CreateIssue';
+import { CreateIssue } from '@/components/buttons/createIssue';
 import { NavigationButtons } from '@/components/buttons/headerButtons/NavigationButtons';
 import { BreadCrumbs } from '@/components/ui/breadCrumbs';
 export const Header = () => {

@@ -1,10 +1,10 @@
 import { Loader } from '@/components/ui/loader';
-import { useGetTasksQuery } from '@/query/get';
+import { useGetTasksQuery } from '@/query/get/getBoardsSlice';
 import { HStack, VStack } from '@chakra-ui/react';
 import { TaskList } from '../../components/features/taskListIssues/taskList';
 import { Search } from '@/components/features/search';
 import { Filter } from '@/components/features/filter';
-import { CreateIssue } from '@/components/buttons/headerButtons/CreateIssue';
+import { CreateIssue } from '@/components/buttons/createIssue';
 
 export const Tasks = () => {
   const { data, isLoading, isError } = useGetTasksQuery();

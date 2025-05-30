@@ -1,8 +1,9 @@
 export const taskGroupItemStyles = {
+  w: '100%',
   border: '1px solid #777',
   borderRadius: '4px',
   h: '200px',
-  p: '8px',
+  p: '14px',
   alignItems: 'flex-start',
 } as const;
 export const taskGroupWrapperStyles = {

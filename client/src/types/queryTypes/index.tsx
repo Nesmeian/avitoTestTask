@@ -32,9 +32,20 @@ export type Task = {
 export type ApiResponse<T> = {
   data: T[];
 };
+export type User = {
+  id: number;
+  fullName: string;
+  email: string;
+  avatarUrl: string;
+  description: string;
+  tasksCount: number;
+  teamId: number;
+  teamName: string;
+};
 
 export type BoardsResponse = ApiResponse<Board>;
 export type TasksResponse = ApiResponse<Task>;
+export type UserResponse = ApiResponse<User>;
 
 export type TaskListProps = {
   status?: StatusName;
