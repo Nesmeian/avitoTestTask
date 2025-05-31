@@ -24,7 +24,6 @@ export const Search = () => {
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
   };
-  console.log(allTasks);
   return (
     <FormControl>
       <Input
