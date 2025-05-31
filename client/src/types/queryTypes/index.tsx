@@ -1,3 +1,5 @@
+import { IssueFormValues } from '../form';
+
 type Status = 'Backlog' | 'InProgress' | 'Done';
 type Priority = 'Low' | 'Medium' | 'High';
 export type StatusName = 'Todo' | 'In Progress' | 'Completed';
@@ -15,6 +17,9 @@ export type Assignee = {
 };
 export type AssigneeProps = {
   assignee: Assignee;
+};
+export type updateReg = IssueFormValues & {
+  id?: number;
 };
 
 export type Task = {

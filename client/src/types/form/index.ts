@@ -6,7 +6,6 @@ export type IssueFormValues = {
   assigneeId: number;
   priority: string;
   status: string;
-  id: number;
 };
 export type ControlledMenuFieldProps = {
   name: keyof IssueFormValues;

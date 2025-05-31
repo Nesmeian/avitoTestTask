@@ -2,10 +2,9 @@ import { Tags } from '../constants/tags';
 import { apiSlice } from '../create-api';
 import { ApiEndpoints } from '../constants/api';
 import { ApiGroupNames } from '../constants/api-group-name';
-import { UpdateStatusReg } from '@/types/queryTypes';
+import { updateReg, UpdateStatusReg } from '@/types/queryTypes';
 import { EndpointNames } from '../constants/endpoint-names';
 import { handleStatusUpdateOnUpdate } from '../helpers';
-import { IssueFormValues } from '@/types/form';
 
 export const tasksApiPut = apiSlice
   .enhanceEndpoints({
@@ -13,7 +12,7 @@ export const tasksApiPut = apiSlice
   })
   .injectEndpoints({
     endpoints: (builder) => ({
-      updateTask: builder.mutation<void, IssueFormValues>({
+      updateTask: builder.mutation<void, updateReg>({
         query: (payload) => ({
           url: `${ApiEndpoints.TASK_UPDATE}/${payload.id}`,
           method: 'PUT',
@@ -23,9 +22,8 @@ export const tasksApiPut = apiSlice
         }),
         invalidatesTags: [Tags.TASKS],
         async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-          console.log('yep');
           await handleStatusUpdateOnUpdate(
-            { id: arg.id, status: arg.status },
+            { id: arg.id || 0, status: arg.status },
             dispatch,
             queryFulfilled,
           );

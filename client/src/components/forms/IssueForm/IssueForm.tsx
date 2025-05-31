@@ -1,5 +1,6 @@
 import {
   Button,
+  ButtonGroup,
   chakra,
   FormControl,
   Heading,
@@ -18,11 +19,14 @@ import { Loader } from '@/components/ui/loader';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '@/store/configure-store';
 import { IssuesFormStyles } from './styles';
-import { TaskData } from '@/types/queryTypes';
+import { TaskData, updateReg } from '@/types/queryTypes';
 import { useUpdateTaskMutation } from '@/query/put';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import GetCurrentPath from '@/utils/getCurrentpath';
 
 export const IssueForm = ({ task, onClose }: TaskData) => {
+  const currentPath = GetCurrentPath();
   const [
     createTaskIssue,
     { isLoading: createLoading, isSuccess: createSuccess },
@@ -52,7 +56,7 @@ export const IssueForm = ({ task, onClose }: TaskData) => {
       assigneeId: task?.assignee.id,
     },
   });
-  const onSubmit = (data: IssueFormValues) => {
+  const onSubmit = (data: updateReg) => {
     if (!task) {
       createTaskIssue(data);
     } else {
@@ -65,6 +69,7 @@ export const IssueForm = ({ task, onClose }: TaskData) => {
       onClose();
     }
   }, [createSuccess, updateSuccess, onClose]);
+  const isTasksPage = currentPath[0] === 'issues';
   return (
     <VStack alignItems="start" h="100%">
       <Heading as="h3" size="lg">
@@ -111,7 +116,14 @@ export const IssueForm = ({ task, onClose }: TaskData) => {
             error={errors.priority}
           />
         </VStack>
-        <Button type="submit">{task ? 'Обновить' : 'Создать'}</Button>
+        <ButtonGroup width="100%">
+          {isTasksPage && (
+            <Button as={Link} to={task ? `/boards/${task.boardId}` : '/boards'}>
+              Перейти на доску
+            </Button>
+          )}
+          <Button type="submit">{task ? 'Обновить' : 'Создать'}</Button>
+        </ButtonGroup>
       </chakra.form>
       {loading && <Loader />}
     </VStack>
