@@ -11,6 +11,8 @@ export type UsersStore = {
   assigneeMap: Record<number | string, string>;
 };
 export type TasksStore = {
+  filterStatus: string;
+  filterBoard: string;
   allTasks: Task[];
   tasks: Task[];
 };

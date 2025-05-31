@@ -1,9 +1,8 @@
 import { ApplicationState } from '@/store/configure-store';
-import { setFilteredTasks } from '@/store/tasksStore';
+import { setFilterBoard, setFilterStatus } from '@/store/tasksStore';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
   Button,
-  ButtonGroup,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -15,12 +14,12 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 export const Filter: React.FC = () => {
   const dispatch = useDispatch();
   const STATUS_OPTIONS = {
-    BackLog: 'BackLog',
+    Backlog: 'BackLog',
     InProgress: 'InProgress',
     Done: 'Done',
   };
@@ -31,33 +30,24 @@ export const Filter: React.FC = () => {
     (state: ApplicationState) => state.Tasks.allTasks,
   );
 
-  const [selectedStatus, setSelectedStatus] = useState<string>('');
-  const [selectedBoard, setSelectedBoard] = useState<string>('');
+  const selectedStatus = useSelector(
+    (state: ApplicationState) => state.Tasks.filterStatus,
+  );
+  const selectedBoard = useSelector(
+    (state: ApplicationState) => state.Tasks.filterBoard,
+  );
 
   const handleStatusChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedStatus(e.target.value);
+    dispatch(setFilterStatus(e.target.value));
   };
 
   const handleBoardChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedBoard(e.target.value);
+    dispatch(setFilterBoard(e.target.value));
   };
-  const handleFilter = () => {
-    const filtered = allTasks.filter((task) => {
-      const matchesStatus = selectedStatus
-        ? task.status === selectedStatus
-        : true;
-      const matchesBoard = selectedBoard
-        ? task.boardId == Number(selectedBoard)
-        : true;
-      return matchesStatus && matchesBoard;
-    });
-    dispatch(setFilteredTasks(filtered));
-  };
-
+  console.log(allTasks);
   const handleClearFilter = () => {
-    setSelectedStatus('');
-    setSelectedBoard('');
-    dispatch(setFilteredTasks(allTasks));
+    dispatch(setFilterStatus(''));
+    dispatch(setFilterBoard(''));
   };
   return (
     <Popover placement="bottom-start" closeOnBlur={true}>
@@ -111,10 +101,7 @@ export const Filter: React.FC = () => {
           </VStack>
         </PopoverBody>
         <PopoverFooter>
-          <ButtonGroup w="100%" gap="8px">
-            <Button onClick={handleFilter}>Фильтровать</Button>
-            <Button onClick={handleClearFilter}>Сбросить Фильтры</Button>
-          </ButtonGroup>
+          <Button onClick={handleClearFilter}>Сбросить Фильтры</Button>
         </PopoverFooter>
       </PopoverContent>
     </Popover>
