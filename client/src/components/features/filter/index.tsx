@@ -26,9 +26,6 @@ export const Filter: React.FC = () => {
   const BoardsMap = useSelector(
     (state: ApplicationState) => state.Board.boardMap,
   );
-  const allTasks = useSelector(
-    (state: ApplicationState) => state.Tasks.allTasks,
-  );
 
   const selectedStatus = useSelector(
     (state: ApplicationState) => state.Tasks.filterStatus,
@@ -44,7 +41,7 @@ export const Filter: React.FC = () => {
   const handleBoardChange = (e: ChangeEvent<HTMLSelectElement>) => {
     dispatch(setFilterBoard(e.target.value));
   };
-  console.log(allTasks);
+
   const handleClearFilter = () => {
     dispatch(setFilterStatus(''));
     dispatch(setFilterBoard(''));

@@ -1,4 +1,3 @@
-import { IssueFormValues } from '@/types/form';
 import { Tags } from '../constants/tags';
 import { apiSlice } from '../create-api';
 import { ApiEndpoints } from '../constants/api';
@@ -6,6 +5,7 @@ import { ApiGroupNames } from '../constants/api-group-name';
 import { UpdateStatusReg } from '@/types/queryTypes';
 import { EndpointNames } from '../constants/endpoint-names';
 import { handleStatusUpdateOnUpdate } from '../helpers';
+import { IssueFormValues } from '@/types/form';
 
 export const tasksApiPut = apiSlice
   .enhanceEndpoints({
@@ -15,7 +15,7 @@ export const tasksApiPut = apiSlice
     endpoints: (builder) => ({
       updateTask: builder.mutation<void, IssueFormValues>({
         query: (payload) => ({
-          url: `${ApiEndpoints.TASK_UPDATE}/${payload.boardId}`,
+          url: `${ApiEndpoints.TASK_UPDATE}/${payload.id}`,
           method: 'PUT',
           apiGroupName: ApiGroupNames.TASKS,
           name: EndpointNames.TASKS,
@@ -23,8 +23,9 @@ export const tasksApiPut = apiSlice
         }),
         invalidatesTags: [Tags.TASKS],
         async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+          console.log('yep');
           await handleStatusUpdateOnUpdate(
-            { id: arg.boardId, status: arg.status },
+            { id: arg.id, status: arg.status },
             dispatch,
             queryFulfilled,
           );

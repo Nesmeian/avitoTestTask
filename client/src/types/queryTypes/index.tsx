@@ -1,13 +1,12 @@
 type Status = 'Backlog' | 'InProgress' | 'Done';
 type Priority = 'Low' | 'Medium' | 'High';
-type StatusName = 'Todo' | 'In Progress' | 'Completed';
+export type StatusName = 'Todo' | 'In Progress' | 'Completed';
 export type Board = {
   id: number;
   name: string;
   description: string;
   taskCount: number;
 };
-
 export type Assignee = {
   id: number;
   fullName: string;

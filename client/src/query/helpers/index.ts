@@ -22,6 +22,7 @@ export async function handleStatusUpdateOnUpdate(
   dispatch: AppDispatch,
   queryFulfilled: Promise<{ data: unknown }>,
 ) {
+  console.log(arg.id);
   await queryFulfilled;
   await dispatch(
     tasksApiPut.endpoints.updateTaskStatus.initiate({
