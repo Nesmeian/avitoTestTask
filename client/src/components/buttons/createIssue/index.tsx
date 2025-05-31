@@ -1,12 +1,12 @@
 import { IssueForm } from '@/components/forms/IssueForm/IssueForm';
-import { useDrawer } from '@/context/modalProvider/useModal';
+import { useModal } from '@/context/modalProvider/useModal';
 import { Button } from '@chakra-ui/react';
 
 export const CreateIssue = () => {
-  const { open } = useDrawer();
+  const { open, close } = useModal();
 
   const handleClick = () => {
-    open(<IssueForm />);
+    open(<IssueForm onClose={close} />);
   };
 
   return <Button onClick={handleClick}>Создать задачу</Button>;

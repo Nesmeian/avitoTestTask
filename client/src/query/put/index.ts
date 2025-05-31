@@ -23,7 +23,11 @@ export const tasksApiPut = apiSlice
         }),
         invalidatesTags: [Tags.TASKS],
         async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-          await handleStatusUpdateOnUpdate(arg, dispatch, queryFulfilled);
+          await handleStatusUpdateOnUpdate(
+            { id: arg.boardId, status: arg.status },
+            dispatch,
+            queryFulfilled,
+          );
         },
       }),
       updateTaskStatus: builder.mutation<void, UpdateStatusReg>({

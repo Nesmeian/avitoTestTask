@@ -34,6 +34,7 @@ export type ApiResponse<T> = {
 };
 export type TaskData = {
   task?: Task;
+  onClose: () => void;
 };
 export type User = {
   id: number;

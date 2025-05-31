@@ -4,13 +4,13 @@ import { taskItemStyles, taskListWrapperStyles } from './style';
 import { truncateText } from '@/utils/truncateText';
 import { AssigneeInfo } from '../assigneeInfo';
 import { Badge } from '@/components/ui/badge';
-import { useDrawer } from '@/context/modalProvider/useModal';
+import { useModal } from '@/context/modalProvider/useModal';
 import { IssueForm } from '@/components/forms/IssueForm/IssueForm';
 
 export const TaskList = ({ tasks }: TaskListProps) => {
-  const { open } = useDrawer();
+  const { open, close } = useModal();
   const handleClick = (e: Task) => {
-    open(<IssueForm task={e} />);
+    open(<IssueForm task={e} onClose={close} />);
   };
   return (
     <Grid {...taskListWrapperStyles}>

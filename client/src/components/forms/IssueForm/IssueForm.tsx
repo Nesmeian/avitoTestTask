@@ -20,10 +20,15 @@ import { ApplicationState } from '@/store/configure-store';
 import { IssuesFormStyles } from './styles';
 import { TaskData } from '@/types/queryTypes';
 import { useUpdateTaskMutation } from '@/query/put';
+import { useEffect } from 'react';
 
-export const IssueForm = ({ task }: TaskData) => {
-  const [createTaskIssue, { isLoading }] = useCreateTaskIssueMutation();
-  const [updateTask] = useUpdateTaskMutation();
+export const IssueForm = ({ task, onClose }: TaskData) => {
+  const [
+    createTaskIssue,
+    { isLoading: createLoading, isSuccess: createSuccess },
+  ] = useCreateTaskIssueMutation();
+  const [updateTask, { isLoading: updateLoading, isSuccess: updateSuccess }] =
+    useUpdateTaskMutation();
   const boardsMap = useSelector(
     (state: ApplicationState) => state.Board.boardMap,
   );
@@ -47,22 +52,19 @@ export const IssueForm = ({ task }: TaskData) => {
       assigneeId: task?.assignee.id,
     },
   });
-  const onSubmit = async (data: IssueFormValues) => {
-    if (!data || Object.keys(data).length === 0) {
-      console.error('Payload пустой или не передан!');
-      return;
-    }
-
+  const onSubmit = (data: IssueFormValues) => {
     if (!task) {
       createTaskIssue(data);
     } else {
       updateTask(data);
     }
   };
-  if (isLoading) {
-    return <Loader />;
-  }
-
+  const loading = createLoading || updateLoading;
+  useEffect(() => {
+    if (createSuccess || updateSuccess) {
+      onClose();
+    }
+  }, [createSuccess, updateSuccess, onClose]);
   return (
     <VStack alignItems="start" h="100%">
       <Heading as="h3" size="lg">
@@ -111,6 +113,7 @@ export const IssueForm = ({ task }: TaskData) => {
         </VStack>
         <Button type="submit">{task ? 'Обновить' : 'Создать'}</Button>
       </chakra.form>
+      {loading && <Loader />}
     </VStack>
   );
 };

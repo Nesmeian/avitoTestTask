@@ -18,14 +18,14 @@ export async function handleStatusUpdateOnCreate(
 }
 
 export async function handleStatusUpdateOnUpdate(
-  arg: { id: string; status: string },
+  arg: { id: number; status: string },
   dispatch: AppDispatch,
   queryFulfilled: Promise<{ data: unknown }>,
 ) {
   await queryFulfilled;
   await dispatch(
     tasksApiPut.endpoints.updateTaskStatus.initiate({
-      id: Number(arg.id),
+      id: arg.id,
       status: arg.status,
     }),
   ).unwrap();
