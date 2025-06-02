@@ -11,7 +11,7 @@ export const TaskGroup = ({ tasks, status }: TaskListProps) => {
   const handleOpenModal = (task: Task) => {
     open(<IssueForm task={task} onClose={close} />);
   };
-  console.log(tasks);
+
   return (
     <Droppable droppableId={status as string}>
       {(provided) => (

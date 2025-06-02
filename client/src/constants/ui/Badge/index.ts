@@ -1,11 +1,11 @@
 export const BADGE_STATUS = {
   //difficult
   Low: 'green',
-  Medium: 'default',
+  Medium: 'blue',
   High: 'red',
 
   //progress
   Backlog: 'red',
   InProgress: 'green',
-  Done: 'default',
+  Done: 'blue',
 };

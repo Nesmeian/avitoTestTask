@@ -21,18 +21,21 @@ import { ApplicationState } from '@/store/configure-store';
 import { IssuesFormStyles } from './styles';
 import { TaskData, updateReg } from '@/types/queryTypes';
 import { useUpdateTaskMutation } from '@/query/put';
-import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import GetCurrentPath from '@/utils/getCurrentpath';
 
 export const IssueForm = ({ task, onClose }: TaskData) => {
   const currentPath = GetCurrentPath();
-  const [
-    createTaskIssue,
-    { isLoading: createLoading, isSuccess: createSuccess },
-  ] = useCreateTaskIssueMutation();
-  const [updateTask, { isLoading: updateLoading, isSuccess: updateSuccess }] =
-    useUpdateTaskMutation();
+  const navigate = useNavigate();
+  const [createTaskIssue, createResult] = useCreateTaskIssueMutation();
+  const [updateTask, updateResult] = useUpdateTaskMutation();
+  const submittedDataRef = useRef<IssueFormValues | null>(null);
+  const createPromiseRef = useRef<ReturnType<typeof createTaskIssue> | null>(
+    null,
+  );
+  const updatePromiseRef = useRef<ReturnType<typeof updateTask> | null>(null);
+
   const boardsMap = useSelector(
     (state: ApplicationState) => state.Board.boardMap,
   );
@@ -56,19 +59,51 @@ export const IssueForm = ({ task, onClose }: TaskData) => {
       assigneeId: task?.assignee.id,
     },
   });
+
   const onSubmit = (data: updateReg) => {
+    submittedDataRef.current = data;
     if (!task) {
-      createTaskIssue(data);
+      const promise = createTaskIssue(data);
+      createPromiseRef.current = promise;
     } else {
-      updateTask(data);
+      const promise = updateTask(data);
+      updatePromiseRef.current = promise;
     }
   };
-  const loading = createLoading || updateLoading;
+
   useEffect(() => {
-    if (createSuccess || updateSuccess) {
+    const wasSuccess = createResult.isSuccess || updateResult.isSuccess;
+    if (wasSuccess) {
       onClose();
+      const targetBoardId = submittedDataRef.current?.boardId ?? currentBoardId;
+      navigate(`/boards/${targetBoardId}`);
     }
-  }, [createSuccess, updateSuccess, onClose]);
+  }, [
+    createResult.isSuccess,
+    updateResult.isSuccess,
+    onClose,
+    navigate,
+    currentBoardId,
+  ]);
+  useEffect(() => {
+    return () => {
+      if (
+        createPromiseRef.current !== null &&
+        typeof createPromiseRef.current.abort === 'function'
+      ) {
+        createPromiseRef.current.abort();
+      }
+
+      if (
+        updatePromiseRef.current !== null &&
+        typeof updatePromiseRef.current.abort === 'function'
+      ) {
+        updatePromiseRef.current.abort();
+      }
+    };
+  }, []);
+
+  const loading = createResult.isLoading || updateResult.isLoading;
   const isTasksPage = currentPath[0] === 'issues';
   return (
     <VStack alignItems="start" h="100%">
