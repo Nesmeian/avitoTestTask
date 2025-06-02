@@ -4,6 +4,7 @@ import { apiSlice } from '../query/create-api';
 import { BoardSlice } from './boardStore';
 import { usersSlice } from './usersStore';
 import { TasksSlice } from './tasksStore';
+import { queryState } from './queryState';
 
 const isProduction = false;
 const rootReducer = combineReducers({
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   [BoardSlice.name]: BoardSlice.reducer,
   [usersSlice.name]: usersSlice.reducer,
   [TasksSlice.name]: TasksSlice.reducer,
+  [queryState.name]: queryState.reducer,
 });
 
 export type ApplicationState = ReturnType<typeof rootReducer>;

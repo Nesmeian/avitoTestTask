@@ -56,7 +56,7 @@ export const TaskGroup = ({
                       src={e.assignee.avatarUrl}
                     />
                   </HStack>
-                  <Heading noOfLines={1} as="h4" size="md">
+                  <Heading noOfLines={1} as="h4" size="md" w="80%">
                     {e.title}
                   </Heading>
                   <Text noOfLines={3}>{e.description}</Text>

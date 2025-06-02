@@ -4,3 +4,4 @@ export const STATUSES_MAP = {
   InProgress: 'In Progress',
   Done: 'Completed',
 };
+export const FORM_STORAGE_KEY = 'issueFormData';

@@ -1,4 +1,8 @@
 import { Board, Task, User } from '../queryTypes';
+interface SuccessState {
+  state: boolean;
+  message: string;
+}
 
 export type BoardStore = {
   name: string;
@@ -9,6 +13,10 @@ export type BoardStore = {
 export type UsersStore = {
   users: User[];
   assigneeMap: Record<number | string, string>;
+};
+export type QueryStateType = {
+  isSuccess: SuccessState;
+  isError: SuccessState;
 };
 export type TasksStore = {
   filterStatus: string;

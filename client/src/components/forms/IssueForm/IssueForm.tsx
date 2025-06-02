@@ -3,33 +3,42 @@ import {
   ButtonGroup,
   chakra,
   FormControl,
+  FormErrorMessage,
   Heading,
   Input,
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { IssueFormValues } from '@/types/form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { issueFormSchema } from './resolver';
 import { ControlledMenuField } from './components/ControlledMenuField';
-import { PRIORITIES_MAP, STATUSES_MAP } from './constants';
+import { FORM_STORAGE_KEY, PRIORITIES_MAP, STATUSES_MAP } from './constants';
 import { useCreateTaskIssueMutation } from '@/query/post';
 import { Loader } from '@/components/ui/loader';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '@/store/configure-store';
-import { IssuesFormStyles } from './styles';
-import { TaskData, updateReg } from '@/types/queryTypes';
+
 import { useUpdateTaskMutation } from '@/query/put';
 import { useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import GetCurrentPath from '@/utils/getCurrentpath';
+import { useUnloadFormPersistence } from './hooks/useUnloadFormPersistense';
+import { useIssueFormSuccess } from './hooks/useIssueFormSuccess';
+import { Task } from '@/types/queryTypes';
 
-export const IssueForm = ({ task, onClose }: TaskData) => {
+export const IssueForm = ({
+  task,
+  onClose,
+}: {
+  task?: Task;
+  onClose: () => void;
+}) => {
   const currentPath = GetCurrentPath();
-  const navigate = useNavigate();
   const [createTaskIssue, createResult] = useCreateTaskIssueMutation();
   const [updateTask, updateResult] = useUpdateTaskMutation();
+
   const submittedDataRef = useRef<IssueFormValues | null>(null);
   const createPromiseRef = useRef<ReturnType<typeof createTaskIssue> | null>(
     null,
@@ -46,21 +55,39 @@ export const IssueForm = ({ task, onClose }: TaskData) => {
     (state: ApplicationState) => state.Board.id,
   );
 
+  const savedSession = (() => {
+    try {
+      const raw = sessionStorage.getItem(FORM_STORAGE_KEY);
+      if (raw) {
+        return JSON.parse(raw) as IssueFormValues;
+      }
+    } catch {
+      console.log('session storage is empty');
+    }
+    return null;
+  })();
+
+  const methods = useForm<IssueFormValues>({
+    resolver: yupResolver(issueFormSchema),
+    defaultValues: {
+      boardId: currentBoardId === '' ? undefined : Number(currentBoardId),
+      ...savedSession,
+      ...task,
+      assigneeId: task?.assignee.id ?? undefined,
+      status: task?.status ?? undefined,
+      priority: task?.priority ?? undefined,
+    },
+  });
+
   const {
     handleSubmit,
     register,
     control,
+    getValues,
     formState: { errors },
-  } = useForm<IssueFormValues>({
-    resolver: yupResolver(issueFormSchema),
-    defaultValues: {
-      boardId: currentBoardId === '' ? undefined : Number(currentBoardId),
-      ...task,
-      assigneeId: task?.assignee.id,
-    },
-  });
+  } = methods;
 
-  const onSubmit = (data: updateReg) => {
+  const onSubmit: SubmitHandler<IssueFormValues> = (data) => {
     submittedDataRef.current = data;
     if (!task) {
       const promise = createTaskIssue(data);
@@ -71,31 +98,23 @@ export const IssueForm = ({ task, onClose }: TaskData) => {
     }
   };
 
-  useEffect(() => {
-    const wasSuccess = createResult.isSuccess || updateResult.isSuccess;
-    if (wasSuccess) {
-      onClose();
-      const targetBoardId = submittedDataRef.current?.boardId ?? currentBoardId;
-      navigate(`/boards/${targetBoardId}`);
-    }
-  }, [
+  useIssueFormSuccess(
     createResult.isSuccess,
     updateResult.isSuccess,
+    submittedDataRef,
     onClose,
-    navigate,
-    currentBoardId,
-  ]);
+  );
+
   useEffect(() => {
     return () => {
       if (
-        createPromiseRef.current !== null &&
+        createPromiseRef.current &&
         typeof createPromiseRef.current.abort === 'function'
       ) {
         createPromiseRef.current.abort();
       }
-
       if (
-        updatePromiseRef.current !== null &&
+        updatePromiseRef.current &&
         typeof updatePromiseRef.current.abort === 'function'
       ) {
         updatePromiseRef.current.abort();
@@ -103,30 +122,38 @@ export const IssueForm = ({ task, onClose }: TaskData) => {
     };
   }, []);
 
+  useUnloadFormPersistence(getValues, FORM_STORAGE_KEY, true);
+
   const loading = createResult.isLoading || updateResult.isLoading;
   const isTasksPage = currentPath[0] === 'issues';
   return (
     <VStack alignItems="start" h="100%">
       <Heading as="h3" size="lg">
-        {task ? 'Редактирование рецепта' : 'Создание рецепта'}
+        {task ? 'Редактирование задания' : 'Создание задания'}
       </Heading>
-      <chakra.form {...IssuesFormStyles} onSubmit={handleSubmit(onSubmit)}>
-        <VStack>
+      <chakra.form onSubmit={handleSubmit(onSubmit)} width="100%">
+        <VStack spacing={4}>
           <FormControl isInvalid={!!errors.title}>
             <Input placeholder="Название" {...register('title')} />
+            <FormErrorMessage>
+              {errors.title && errors.title.message}
+            </FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={!!errors.description}>
             <Textarea {...register('description')} placeholder="Описание" />
+            <FormErrorMessage>
+              {errors.description && errors.description.message}
+            </FormErrorMessage>
           </FormControl>
+
           <ControlledMenuField
             name="boardId"
-            label={'Проект'}
+            label="Проект"
             list={boardsMap}
             control={control}
             error={errors.boardId}
-            isDisabled={currentBoardId ? true : false}
+            isDisabled={!!currentBoardId}
           />
-
           <ControlledMenuField
             name="assigneeId"
             label="Исполнитель"
@@ -134,7 +161,6 @@ export const IssueForm = ({ task, onClose }: TaskData) => {
             control={control}
             error={errors.assigneeId}
           />
-
           <ControlledMenuField
             name="status"
             label="Статус"
@@ -142,7 +168,6 @@ export const IssueForm = ({ task, onClose }: TaskData) => {
             control={control}
             error={errors.status}
           />
-
           <ControlledMenuField
             name="priority"
             label="Приоритет"
@@ -150,15 +175,19 @@ export const IssueForm = ({ task, onClose }: TaskData) => {
             control={control}
             error={errors.priority}
           />
+
+          <ButtonGroup width="100%" justifyContent="space-between">
+            {isTasksPage && (
+              <Button
+                as={Link}
+                to={task ? `/boards/${task.boardId}` : '/boards'}
+              >
+                Перейти на доску
+              </Button>
+            )}
+            <Button type="submit">{task ? 'Обновить' : 'Создать'}</Button>
+          </ButtonGroup>
         </VStack>
-        <ButtonGroup width="100%">
-          {isTasksPage && (
-            <Button as={Link} to={task ? `/boards/${task.boardId}` : '/boards'}>
-              Перейти на доску
-            </Button>
-          )}
-          <Button type="submit">{task ? 'Обновить' : 'Создать'}</Button>
-        </ButtonGroup>
       </chakra.form>
       {loading && <Loader />}
     </VStack>

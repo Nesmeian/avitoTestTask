@@ -2,7 +2,7 @@ import { Loader } from '@/components/ui/loader';
 import { useGetBoardsByIdQuery } from '@/query/get/getBoardsSlice';
 import { getFilteredTaskList } from '@/utils/getFilteredTaskList';
 import { Grid, Heading, VStack } from '@chakra-ui/react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '@/store/configure-store';
 import { TaskGroup } from '@/components/features/taskGroup';
@@ -13,6 +13,7 @@ import { ColumnsState } from '@/types/storeTypes';
 import { useTaskDragAndDrop } from '@/utils/dragAndDrop';
 
 export const Board = () => {
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const title = useSelector((state: ApplicationState) => state.Board.name);
   const { data, isLoading } = useGetBoardsByIdQuery(id!);
@@ -52,7 +53,7 @@ export const Board = () => {
     return <Loader />;
   }
   if (!data?.data) {
-    return <div>Error: No board data found</div>;
+    navigate('/not-found', { replace: true });
   }
   const onDragStart = (start: DragStart) => {
     setDragSource(start.source.droppableId);
