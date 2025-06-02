@@ -27,6 +27,7 @@ import GetCurrentPath from '@/utils/getCurrentpath';
 import { useUnloadFormPersistence } from './hooks/useUnloadFormPersistense';
 import { useIssueFormSuccess } from './hooks/useIssueFormSuccess';
 import { Task } from '@/types/queryTypes';
+import { useIssueFormError } from './hooks/useIssueFormError';
 
 export const IssueForm = ({
   task,
@@ -104,7 +105,12 @@ export const IssueForm = ({
     submittedDataRef,
     onClose,
   );
-
+  useIssueFormError(
+    createResult.isError,
+    updateResult.isError,
+    submittedDataRef,
+    onClose,
+  );
   useEffect(() => {
     return () => {
       if (
