@@ -16,3 +16,8 @@ export type TasksStore = {
   allTasks: Task[];
   tasks: Task[];
 };
+export type ColumnsState = {
+  Backlog: Task[];
+  InProgress: Task[];
+  Done: Task[];
+};

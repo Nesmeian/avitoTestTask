@@ -56,8 +56,10 @@ export type TasksResponse = ApiResponse<Task>;
 export type UserResponse = ApiResponse<User>;
 
 export type TaskListProps = {
-  status?: StatusName;
+  status: string;
   tasks: Task[];
+  isDropDisabled: boolean;
+  highlight: boolean;
 };
 export type UpdateStatusReg = { id: number; status: string };
 export type CreateTaskResponse = { data: { id: number } };

@@ -1,5 +1,10 @@
 import { Link } from 'react-router-dom';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Text,
+} from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBoardId, setBoardName } from '@/store/boardStore';
@@ -30,7 +35,7 @@ export const BreadCrumbs = () => {
   }, [dispatch, currentBoard, currentPath]);
 
   const crumbsList: Crumb[] = buildCrumbs(currentPath, currentBoard);
-
+  const singleMode = crumbsList.length === 1;
   return (
     <Breadcrumb
       spacing="8px"
@@ -42,7 +47,12 @@ export const BreadCrumbs = () => {
           key={crumb.to}
           isCurrentPage={idx === crumbsList.length - 1}
         >
-          <BreadcrumbLink as={Link} to={crumb.to}>
+          <BreadcrumbLink
+            as={singleMode ? Text : Link}
+            {...(!singleMode ? { to: crumb.to } : {})}
+            cursor={singleMode ? 'default' : 'pointer'}
+            color={singleMode ? 'gray.600' : undefined}
+          >
             {crumb.label}
           </BreadcrumbLink>
         </BreadcrumbItem>

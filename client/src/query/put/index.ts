@@ -37,7 +37,6 @@ export const tasksApiPut = apiSlice
           name: EndpointNames.TASKS,
           body: { status },
         }),
-        invalidatesTags: [Tags.TASKS],
       }),
     }),
   });

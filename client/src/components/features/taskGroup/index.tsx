@@ -1,47 +1,53 @@
 import { Task, TaskListProps } from '@/types/queryTypes';
 import { Avatar, Heading, HStack, Text, VStack } from '@chakra-ui/react';
-import { taskGroupItemStyles } from './style';
 import { Badge } from '@/components/ui/badge';
 import { Draggable, Droppable } from '@hello-pangea/dnd';
 import { useModal } from '@/context/modalProvider/useModal';
 import { IssueForm } from '@/components/forms/IssueForm/IssueForm';
+import { taskGroupItemStyles, taskGroupWrapperStyles } from './style';
 
-export const TaskGroup = ({ tasks, status }: TaskListProps) => {
+export const TaskGroup = ({
+  tasks,
+  status,
+  isDropDisabled,
+  highlight,
+}: TaskListProps) => {
   const { open, close } = useModal();
   const handleOpenModal = (task: Task) => {
     open(<IssueForm task={task} onClose={close} />);
   };
 
   return (
-    <Droppable droppableId={status as string}>
-      {(provided) => (
+    <Droppable droppableId={status} isDropDisabled={isDropDisabled}>
+      {(provided, snapshot) => (
         <VStack
           ref={provided.innerRef}
           {...provided.droppableProps}
-          gap="16px"
-          p="16px"
-          border="1px solid #e5e5e5"
-          minHeight="200px"
+          {...taskGroupWrapperStyles}
+          borderColor={highlight ? 'green' : 'gray'}
+          bg={snapshot.isDraggingOver && !isDropDisabled ? 'gray.50' : 'white'}
         >
           <Heading as="h3" size="lg" alignSelf="start">
             {status}
           </Heading>
 
           {tasks.length === 0 && (
-            <Heading m="auto" size="3xl">
+            <Heading m="auto" size="3xl" color="gray.400">
               Нет задач
             </Heading>
           )}
 
           {tasks.map((e, index) => (
-            <Draggable draggableId={String(e.id)} index={index} key={e.id}>
-              {(provided) => (
+            <Draggable key={e.id} draggableId={String(e.id)} index={index}>
+              {(draggableProvided, draggableSnapshot) => (
                 <VStack
                   onClick={() => handleOpenModal(e)}
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  {...provided.dragHandleProps}
+                  ref={draggableProvided.innerRef}
+                  {...draggableProvided.draggableProps}
+                  {...draggableProvided.dragHandleProps}
                   {...taskGroupItemStyles}
+                  borderColor={draggableSnapshot.isDragging ? 'blue' : 'gray'}
+                  boxShadow={draggableSnapshot.isDragging ? 'md' : 'none'}
                 >
                   <HStack w="100%" justifyContent="space-between">
                     <Badge status={e.priority} />
