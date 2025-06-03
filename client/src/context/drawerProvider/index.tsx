@@ -1,13 +1,13 @@
-import { ReactNode, useState } from 'react';
 import {
-  Modal,
-  ModalContent,
-  ModalOverlay,
+  Drawer,
+  DrawerContent,
+  DrawerOverlay,
   useDisclosure,
 } from '@chakra-ui/react';
-import { ModalContext } from './useModal';
+import { ReactNode, useState } from 'react';
+import { DrawerContext } from './useDrawer';
 
-export const ModalProvider = ({ children }: { children: ReactNode }) => {
+export const DrawerProvider = ({ children }: { children: ReactNode }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [content, setContent] = useState<ReactNode>(null);
 
@@ -22,25 +22,21 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <ModalContext.Provider value={{ open, close }}>
+    <DrawerContext.Provider value={{ open, close, isOpen }}>
       {children}
 
-      <Modal
-        isOpen={isOpen}
-        onClose={close}
-        size={{ md: 'lg', base: 'sm' }}
-        isCentered
-      >
-        <ModalOverlay />
-        <ModalContent
+      <Drawer isOpen={isOpen} onClose={close} size={{ md: 'lg', base: 'sm' }}>
+        <DrawerOverlay />
+        <DrawerContent
           borderRadius="12px"
           boxShadow="0 0 15px rgba(0,0,0,0.1)"
           p={{ base: '40px' }}
           m={{ base: '20px' }}
+          mt="80px"
         >
           {content}
-        </ModalContent>
-      </Modal>
-    </ModalContext.Provider>
+        </DrawerContent>
+      </Drawer>
+    </DrawerContext.Provider>
   );
 };

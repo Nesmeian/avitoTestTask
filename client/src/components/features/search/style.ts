@@ -1,3 +1,3 @@
 export const searchStyle = {
-  width: { base: '320px' },
+  width: { md: '320px', base: '100%' },
 };

@@ -15,7 +15,7 @@ export const NotFoundPage = () => (
       <Image
         src={notFoundImg}
         alt="not found image"
-        boxSize={{ lg: '206px', base: '108px' }}
+        boxSize={{ md: '206px', base: '108px' }}
       />
       <Heading fontSize="24px" fontWeight="700" size="h1" as="h1">
         Упс! Такой страницы нет.

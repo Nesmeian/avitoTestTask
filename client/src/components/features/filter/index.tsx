@@ -50,7 +50,7 @@ export const Filter: React.FC = () => {
     <Popover placement="bottom-start" closeOnBlur={true}>
       <PopoverTrigger>
         <Button
-          w={{ base: '380px' }}
+          w={{ md: '380x', base: '100%' }}
           justifyContent="space-between"
           rightIcon={<ChevronDownIcon />}
         >

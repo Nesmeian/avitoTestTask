@@ -68,7 +68,7 @@ export const Board = () => {
       <Heading>{title}</Heading>
       <DragDropContext onDragStart={onDragStart} onDragEnd={onDragComplete}>
         <Grid
-          templateColumns={{ lg: 'repeat(3, 1fr)', base: '1fr' }}
+          templateColumns={{ md: 'repeat(3, 1fr)', base: '1fr' }}
           gap="16px"
         >
           <TaskGroup

@@ -11,5 +11,5 @@ export const taskGroupItemStyles = {
 export const taskGroupWrapperStyles = {
   border: '2px solid',
   borderRadius: '8px',
-  p: { lg: '20px', base: '16px' },
+  p: { md: '20px', base: '16px' },
 };

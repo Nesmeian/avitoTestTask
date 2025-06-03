@@ -1,14 +1,41 @@
-import { extendTheme } from '@chakra-ui/react';
+import { extendTheme, ThemeConfig } from '@chakra-ui/react';
+
+const config: ThemeConfig = {
+  initialColorMode: 'light',
+  useSystemColorMode: false,
+};
 
 const theme = extendTheme({
+  config,
   styles: {
     global: {
       '::-webkit-scrollbar': {
         display: 'none',
       },
+
       '*': {
         scrollbarWidth: 'none',
         msOverflowStyle: 'none',
+      },
+    },
+  },
+  components: {
+    Button: {
+      variants: {
+        primary: {
+          bg: 'gray.800',
+          color: 'white',
+          transition: '0.2s',
+          _hover: {
+            bg: 'gray.900',
+            border: '2px solid',
+            borderColor: 'white',
+            color: 'gray.100',
+          },
+        },
+      },
+      defaultProps: {
+        variant: 'primary',
       },
     },
   },

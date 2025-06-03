@@ -8,6 +8,7 @@ import { Loader } from '@/components/ui/loader';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '@/store/configure-store';
 import { Alert } from '@/components/ui/alert';
+import { DrawerProvider } from '@/context/drawerProvider';
 
 export const Main = () => {
   const { loading } = useTaskReferenceData();
@@ -23,14 +24,16 @@ export const Main = () => {
 
   return (
     <ModalProvider>
-      <Stack gap="0px">
-        <Header />
-        <HStack as="main" {...mainStyles}>
-          <Outlet />
-        </HStack>
-      </Stack>
-      {isSuccess.state && <Alert isSuccess message={isSuccess.message} />}
-      {isError.state && <Alert isSuccess={false} message={isError.message} />}
+      <DrawerProvider>
+        <Stack gap="0px">
+          <Header />
+          <HStack as="main" {...mainStyles}>
+            <Outlet />
+          </HStack>
+        </Stack>
+        {isSuccess.state && <Alert isSuccess message={isSuccess.message} />}
+        {isError.state && <Alert isSuccess={false} message={isError.message} />}
+      </DrawerProvider>
     </ModalProvider>
   );
 };

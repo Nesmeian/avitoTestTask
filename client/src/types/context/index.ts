@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 
-export type ModalContextType = {
+export type ContextType = {
   open: (content: ReactNode) => void;
   close: () => void;
+  isOpen?: boolean;
 };

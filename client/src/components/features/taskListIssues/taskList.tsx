@@ -24,10 +24,17 @@ export const TaskList = ({ tasks }: TaskListProps) => {
             </HStack>
           </HStack>
           <VStack w="100%" alignItems="flex-start">
-            <Heading as="h3" size={{ lg: 'sm', base: 'sm' }} textAlign="start">
+            <Heading
+              w="100%"
+              as="h3"
+              size={{ lg: 'sm', base: 'sm' }}
+              textAlign="start"
+            >
               {truncateText(e.title)}
             </Heading>
-            <Text>{e.description}</Text>
+            <Text noOfLines={3} w="100%">
+              {e.description}
+            </Text>
           </VStack>
         </VStack>
       ))}
