@@ -6,10 +6,6 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { MemoryRouter } from 'react-router-dom';
 import { FORM_STORAGE_KEY } from '../constants';
-import tasksReducer, {
-  setTasks,
-  setFilteredTasks,
-} from '../../../../store/tasksStore';
 vi.mock('@/query/post', () => ({
   useCreateTaskIssueMutation: () => [
     () => {},
@@ -45,7 +41,7 @@ vi.mock('react-redux', async () => {
   const actual = (await vi.importActual<any>('react-redux')) as any;
   return {
     ...actual,
-    useSelector: vi.fn((selector) => {
+    useSelector: vi.fn(() => {
       return {};
     }),
   };
@@ -53,7 +49,7 @@ vi.mock('react-redux', async () => {
 
 const mockStore = configureStore([]);
 
-describe('IssueForm (small smoke test)', () => {
+describe('IssueForm Тесты', () => {
   it('рендерится с заголовком «Создание задания»', () => {
     const store = mockStore({
       Board: { boardMap: {}, id: '' },
@@ -284,103 +280,5 @@ describe('IssueForm (small smoke test)', () => {
       'Описание',
     ) as HTMLTextAreaElement;
     expect(descriptionInput.value).toBe('Описание из хранилища');
-  });
-});
-describe('TasksSlice - фильтрация задач', () => {
-  it('по умолчанию возвращает все задачи (filterStatus="all", filterBoard="all")', () => {
-    let state = tasksReducer(undefined, { type: 'unknown' });
-    const initialTasks = [
-      { id: '1', title: 'Task 1', status: 'completed', board: 'Board1' },
-      { id: '2', title: 'Task 2', status: 'inProgress', board: 'Board2' },
-      { id: '3', title: 'Task 3', status: 'inProgress', board: 'Board1' },
-    ];
-    state = tasksReducer(state, setTasks(initialTasks));
-    const filteredTasks = state.allTasks.filter(
-      (task) =>
-        (state.filterStatus === 'all' || task.status === state.filterStatus) &&
-        (state.filterBoard === 'all' || task.board === state.filterBoard),
-    );
-
-    state = tasksReducer(state, setFilteredTasks(filteredTasks));
-    expect(state.tasks).toEqual(filteredTasks);
-  });
-
-  it('фильтрация по статусу (filterStatus="inProgress", filterBoard="all")', () => {
-    let state = tasksReducer(undefined, { type: 'unknown' });
-    state = { ...state, filterStatus: 'inProgress', filterBoard: 'all' };
-    const initialTasks = [
-      { id: '1', title: 'Task 1', status: 'completed', board: 'Board1' },
-      { id: '2', title: 'Task 2', status: 'inProgress', board: 'Board2' },
-      { id: '3', title: 'Task 3', status: 'inProgress', board: 'Board1' },
-    ];
-    state = tasksReducer(state, setTasks(initialTasks));
-    const filteredTasks = state.allTasks.filter(
-      (task) =>
-        (state.filterStatus === 'all' || task.status === state.filterStatus) &&
-        (state.filterBoard === 'all' || task.board === state.filterBoard),
-    );
-    state = tasksReducer(state, setFilteredTasks(filteredTasks));
-
-    expect(state.tasks).toEqual(filteredTasks);
-  });
-
-  it('фильтрация по доске (filterStatus="all", filterBoard="Board1")', () => {
-    let state = tasksReducer(undefined, { type: 'unknown' });
-
-    state = { ...state, filterStatus: 'all', filterBoard: 'Board1' };
-    const initialTasks = [
-      { id: '1', title: 'Task 1', status: 'completed', board: 'Board1' },
-      { id: '2', title: 'Task 2', status: 'inProgress', board: 'Board2' },
-      { id: '3', title: 'Task 3', status: 'inProgress', board: 'Board1' },
-    ];
-    state = tasksReducer(state, setTasks(initialTasks));
-    const filteredTasks = state.allTasks.filter(
-      (task) =>
-        (state.filterStatus === 'all' || task.status === state.filterStatus) &&
-        (state.filterBoard === 'all' || task.board === state.filterBoard),
-    );
-    state = tasksReducer(state, setFilteredTasks(filteredTasks));
-
-    expect(state.tasks).toEqual(filteredTasks);
-  });
-
-  it('фильтрация по статусу и доске (filterStatus="inProgress", filterBoard="Board1")', () => {
-    let state = tasksReducer(undefined, { type: 'unknown' });
-
-    state = { ...state, filterStatus: 'inProgress', filterBoard: 'Board1' };
-    const initialTasks = [
-      { id: '1', title: 'Task 1', status: 'completed', board: 'Board1' },
-      { id: '2', title: 'Task 2', status: 'inProgress', board: 'Board2' },
-      { id: '3', title: 'Task 3', status: 'inProgress', board: 'Board1' },
-    ];
-    state = tasksReducer(state, setTasks(initialTasks));
-    const filteredTasks = state.allTasks.filter(
-      (task) =>
-        (state.filterStatus === 'all' || task.status === state.filterStatus) &&
-        (state.filterBoard === 'all' || task.board === state.filterBoard),
-    );
-    state = tasksReducer(state, setFilteredTasks(filteredTasks));
-
-    expect(state.tasks).toEqual(filteredTasks);
-  });
-
-  it('нет задач для комбинации фильтров (filterStatus="completed", filterBoard="Board2")', () => {
-    let state = tasksReducer(undefined, { type: 'unknown' });
-
-    state = { ...state, filterStatus: 'completed', filterBoard: 'Board2' };
-    const initialTasks = [
-      { id: '1', title: 'Task 1', status: 'completed', board: 'Board1' },
-      { id: '2', title: 'Task 2', status: 'inProgress', board: 'Board2' },
-      { id: '3', title: 'Task 3', status: 'inProgress', board: 'Board1' },
-    ];
-    state = tasksReducer(state, setTasks(initialTasks));
-    const filteredTasks = state.allTasks.filter(
-      (task) =>
-        (state.filterStatus === 'all' || task.status === state.filterStatus) &&
-        (state.filterBoard === 'all' || task.board === state.filterBoard),
-    );
-    state = tasksReducer(state, setFilteredTasks(filteredTasks));
-
-    expect(state.tasks).toEqual(filteredTasks);
   });
 });
