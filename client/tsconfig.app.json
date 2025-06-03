@@ -29,5 +29,11 @@
     /* Types */
     "types": ["node", "vite/client"]
   },
-  "include": ["src", "main.tsx"]
+  "include": [
+    "src",
+    "main.tsx",
+    "tests",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.tsx"
+, "vitest.config.ts"  ]
 }
