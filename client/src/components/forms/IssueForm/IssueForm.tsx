@@ -22,7 +22,7 @@ import { ApplicationState } from '@/store/configure-store';
 
 import { useUpdateTaskMutation } from '@/query/put';
 import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import GetCurrentPath from '@/utils/getCurrentpath';
 import { useUnloadFormPersistence } from './hooks/useUnloadFormPersistense';
 import { useIssueFormSuccess } from './hooks/useIssueFormSuccess';
@@ -36,10 +36,11 @@ export const IssueForm = ({
   task?: Task;
   onClose: () => void;
 }) => {
+  const location = useLocation();
   const currentPath = GetCurrentPath();
   const [createTaskIssue, createResult] = useCreateTaskIssueMutation();
   const [updateTask, updateResult] = useUpdateTaskMutation();
-
+  const prevPathRef = useRef(location.pathname);
   const submittedDataRef = useRef<IssueFormValues | null>(null);
   const createPromiseRef = useRef<ReturnType<typeof createTaskIssue> | null>(
     null,
@@ -112,21 +113,14 @@ export const IssueForm = ({
     onClose,
   );
   useEffect(() => {
-    return () => {
-      if (
-        createPromiseRef.current &&
-        typeof createPromiseRef.current.abort === 'function'
-      ) {
-        createPromiseRef.current.abort();
-      }
-      if (
-        updatePromiseRef.current &&
-        typeof updatePromiseRef.current.abort === 'function'
-      ) {
-        updatePromiseRef.current.abort();
-      }
-    };
-  }, []);
+    if (location.pathname !== prevPathRef.current) {
+      if (createPromiseRef.current?.abort) createPromiseRef.current.abort();
+      if (updatePromiseRef.current?.abort) updatePromiseRef.current.abort();
+
+      onClose();
+    }
+    prevPathRef.current = location.pathname;
+  }, [location.pathname, onClose]);
 
   useUnloadFormPersistence(getValues, FORM_STORAGE_KEY, true);
 

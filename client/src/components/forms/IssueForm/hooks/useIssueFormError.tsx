@@ -14,7 +14,7 @@ export function useIssueFormError(
   const dispatch = useDispatch();
   useEffect(() => {
     if (createError) {
-      dispatch(setIsError('Заявка успешно создана'));
+      dispatch(setIsError('Что-то пошло не так попробуйте в другой раз'));
       onClose();
       const targetBoardId = submittedRef.current?.boardId;
       if (targetBoardId !== undefined) {
@@ -23,7 +23,7 @@ export function useIssueFormError(
     }
 
     if (updateError) {
-      dispatch(setIsError('Заявка успешно обновлена'));
+      dispatch(setIsError('Что-то пошло не так попробуйте в другой раз'));
       onClose();
       const targetBoardId = submittedRef.current?.boardId;
       if (targetBoardId !== undefined) {

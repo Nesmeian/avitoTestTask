@@ -8,11 +8,9 @@ export const loaderOverlayStyles = {
   zIndex: 9999,
 } as const;
 export const loaderWrapperStyles = {
-  h: { lg: '206px', base: '136px' },
-  w: { lg: '206px', base: '136px' },
+  w: '100%',
+  h: '100%',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  background:
-    'radial-gradient(50% 50% at 50% 50%, #c4ff61 0%, rgba(255, 255, 255, 0) 100%)',
 };

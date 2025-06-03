@@ -19,6 +19,7 @@ const theme = extendTheme({
       },
     },
   },
+
   components: {
     Button: {
       variants: {
@@ -28,9 +29,14 @@ const theme = extendTheme({
           transition: '0.2s',
           _hover: {
             bg: 'gray.900',
-            border: '2px solid',
+            border: '3px solid',
             borderColor: 'white',
             color: 'gray.100',
+          },
+          _invalid: {
+            border: '6px solid',
+            borderColor: 'red.500',
+            boxShadow: '0 0 0 1px red.600',
           },
         },
       },

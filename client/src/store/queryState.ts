@@ -27,12 +27,12 @@ export const queryState = createSlice({
     },
     setIsError: (state, action) => {
       state.isError = {
-        state: false,
-        message: '',
-      };
-      state.isSuccess = {
         state: true,
         message: action.payload,
+      };
+      state.isSuccess = {
+        state: false,
+        message: '',
       };
     },
     clearState: (state) => {
