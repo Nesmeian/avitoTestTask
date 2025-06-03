@@ -1,7 +1,7 @@
 import { Loader } from '@/components/ui/loader';
 import { useGetBoardsByIdQuery } from '@/query/get/getBoardsSlice';
 import { getFilteredTaskList } from '@/utils/getFilteredTaskList';
-import { Grid, Heading, VStack } from '@chakra-ui/react';
+import { Grid, GridItem, Heading, VStack } from '@chakra-ui/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '@/store/configure-store';
@@ -64,33 +64,40 @@ export const Board = () => {
     setDragSource(null);
   };
   return (
-    <VStack gap={8}>
+    <VStack gap={8} w="100%">
       <Heading>{title}</Heading>
       <DragDropContext onDragStart={onDragStart} onDragEnd={onDragComplete}>
         <Grid
           templateColumns={{ md: 'repeat(3, 1fr)', base: '1fr' }}
           gap="16px"
+          w="100%"
         >
-          <TaskGroup
-            status="Backlog"
-            tasks={columns.Backlog}
-            isDropDisabled={dragSource === 'Backlog'}
-            highlight={!!dragSource && dragSource !== 'Backlog'}
-          />
+          <GridItem minW={0} w="100%">
+            <TaskGroup
+              status="Backlog"
+              tasks={columns.Backlog}
+              isDropDisabled={dragSource === 'Backlog'}
+              highlight={!!dragSource && dragSource !== 'Backlog'}
+            />
+          </GridItem>
 
-          <TaskGroup
-            status="InProgress"
-            tasks={columns.InProgress}
-            isDropDisabled={dragSource === 'InProgress'}
-            highlight={!!dragSource && dragSource !== 'InProgress'}
-          />
+          <GridItem minW={0} w="100%">
+            <TaskGroup
+              status="InProgress"
+              tasks={columns.InProgress}
+              isDropDisabled={dragSource === 'InProgress'}
+              highlight={!!dragSource && dragSource !== 'InProgress'}
+            />
+          </GridItem>
 
-          <TaskGroup
-            status="Done"
-            tasks={columns.Done}
-            isDropDisabled={dragSource === 'Done'}
-            highlight={!!dragSource && dragSource !== 'Done'}
-          />
+          <GridItem minW={0} w="100%">
+            <TaskGroup
+              status="Done"
+              tasks={columns.Done}
+              isDropDisabled={dragSource === 'Done'}
+              highlight={!!dragSource && dragSource !== 'Done'}
+            />
+          </GridItem>
         </Grid>
       </DragDropContext>
     </VStack>

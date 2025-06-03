@@ -59,7 +59,9 @@ export const TaskGroup = ({
                   <Heading noOfLines={1} as="h4" size="md" w="80%">
                     {e.title}
                   </Heading>
-                  <Text noOfLines={3}>{e.description}</Text>
+                  <Text noOfLines={3} w="100%">
+                    {e.description}
+                  </Text>
                 </VStack>
               )}
             </Draggable>
