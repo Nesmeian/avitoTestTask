@@ -5,7 +5,13 @@ import { VStack } from '@chakra-ui/react';
 
 export const BurgerMenu = ({ onClose }: { onClose: () => void }) => {
   return (
-    <VStack alignItems="flex-start" gap="20px" h="100%" overflowY="scroll">
+    <VStack
+      alignItems="flex-start"
+      gap="20px"
+      h="100%"
+      overflowY="scroll"
+      justifyContent="space-between"
+    >
       <BreadCrumbs />
       <NavigationButtons onClose={onClose} />
       <ControlPanel isDrawer />

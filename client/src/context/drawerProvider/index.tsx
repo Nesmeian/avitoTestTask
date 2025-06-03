@@ -28,6 +28,7 @@ export const DrawerProvider = ({ children }: { children: ReactNode }) => {
       <Drawer isOpen={isOpen} onClose={close} size={{ md: 'lg', base: 'sm' }}>
         <DrawerOverlay />
         <DrawerContent
+          h="400px"
           borderRadius="12px"
           boxShadow="0 0 15px rgba(0,0,0,0.1)"
           p={{ base: '40px' }}

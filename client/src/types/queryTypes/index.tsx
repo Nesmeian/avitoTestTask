@@ -56,6 +56,9 @@ export type TasksResponse = ApiResponse<Task>;
 export type UserResponse = ApiResponse<User>;
 
 export type TaskListProps = {
+  tasks: Task[];
+};
+export type TaskGroupProps = {
   status: string;
   tasks: Task[];
   isDropDisabled: boolean;

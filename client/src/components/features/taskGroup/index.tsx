@@ -1,4 +1,4 @@
-import { Task, TaskListProps } from '@/types/queryTypes';
+import { Task, TaskGroupProps } from '@/types/queryTypes';
 import { Avatar, Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import { Badge } from '@/components/ui/badge';
 import { Draggable, Droppable } from '@hello-pangea/dnd';
@@ -11,7 +11,7 @@ export const TaskGroup = ({
   status,
   isDropDisabled,
   highlight,
-}: TaskListProps) => {
+}: TaskGroupProps) => {
   const { open, close } = useModal();
   const handleOpenModal = (task: Task) => {
     open(<IssueForm task={task} onClose={close} />);
